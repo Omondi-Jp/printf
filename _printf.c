@@ -45,38 +45,11 @@ int (*find_correct_func(const char *format))(va_list)
  */
 int _printf(const char *format, ...)
 {
-	va_list list;
-	int (*f)(va_list);
-	unsigned int i = 0, len = 0;
-	if (format == NULL)
-		return (-1);
-	va_start(list, format);
-	while (format[i])
-	{
-		while (format[i] != '%' && format[i])
-		{
-			_putchar(format[i]);
-			len++;
-			i++;
-		}
-		if (format[i] == '\0')
-			return (len);
-		f = find_correct_func(&format[i + 1]);
-		if (f != NULL)
-		{
-			len += f(list);
-			i += 2;
-			continue;
-		}
-		if (!format[i + 1])
-			return (-1);
-		_putchar(format[i]);
-		len++;
-		if (format[i + 1] == '%')
-			i += 2;
-		else
-			i++;
-	}
-	va_end(list);
-	return (len);
+	va_list parameter_list;
+	int n;
+
+	va_start(parameter_list, format);
+	n = vfprintf(stdout, format, parameter_list);
+	va_end(parameter_list);
+	return (n);
 }
